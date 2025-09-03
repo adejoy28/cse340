@@ -44,12 +44,7 @@ h6 {
   flex-direction: column;
   background: var(--white);
   padding: 0 .5rem;
-  /* this will be moved to media queries */
-
-  /* max-width: 1000px;  */
-  /* margin: 0 auto; */
-  /* border-radius: 1rem; */
-  /* border: 2px solid var(--darkGrey); */
+  
 }
 
 #top-header {
