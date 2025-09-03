@@ -4,3 +4,274 @@
 *:after {
   box-sizing: border-box;
 }
+
+
+:root {
+  /* colors */
+  --black: #000;
+  --white: #fff;
+  --transparentWhite: rgba(255, 255, 255, .5);
+  --lightGrey: #f1f1f1;
+  --darkGrey: #333;
+  --blue: rgba(67, 160, 237, 1);
+
+  /* fonts */
+  --brico: 'Bricolage Grotesque', sans-serif;
+  --instrument: 'Instrument Sans', sans-serif;
+  --instrumentSerif: 'Instrument Serif', serif;
+}
+
+body {
+  background-image: url("../images/site/checkerboard.jpg");
+  font-family: var(--instrument);
+  /* this will be moved to media queries */
+  /* padding: 1rem 0; */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--brico);
+  font-weight: 600;
+}
+
+#wrapper {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  padding: 0 .5rem;
+  /* this will be moved to media queries */
+
+  /* max-width: 1000px;  */
+  /* margin: 0 auto; */
+  /* border-radius: 1rem; */
+  /* border: 2px solid var(--darkGrey); */
+}
+
+#top-header {
+  padding: .5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.siteName {
+  font-family: var(--brico);
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: .5rem 0;
+  display: block;
+}
+
+.siteName:hover,
+.siteName:active {
+  border-bottom: 1px solid var(--darkGrey);
+}
+
+.siteName a {
+  color: var(--darkGrey);
+}
+
+#tools {
+  font-family: var(--instrument);
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+#tools a:hover,
+#tools a:active {
+  border-bottom: 1px solid var(--darkGrey);
+}
+
+#tools a {
+  color: var(--darkGrey);
+  text-decoration: none;
+  padding: .2rem 0;
+}
+
+/* Navigation */
+
+nav {
+  font-family: var(--instrument);
+  font-weight: 400;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+  padding: .5rem;
+  background-color: var(--darkGrey);
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  padding: 0;
+  justify-content: space-around;
+}
+
+nav ul li {
+  color: var(--white)
+}
+
+
+/******* Index page ***************/
+/* Hero */
+#hero {
+  background-image: url("../images/vehicles/delorean.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 1rem 0;
+  /* border: 1px solid var(--black); */
+  /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+}
+
+#hero h1 {
+  font-family: var(--instrument);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .5rem 0;
+  display: block;
+}
+
+#hero .d-heroContent {
+  font-family: var(--instrument);
+  font-weight: 600;
+  padding: .5rem 0;
+  display: block;
+  width: fit-content;
+  line-height: 1.2;
+  background-color: var(--transparentWhite);
+  color: var(--blue);
+  padding: 0 .5rem;
+}
+
+.d-heroContent h2 {
+  font-family: var(--instrument);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .5rem 0;
+  display: block;
+}
+
+.d-heroContent p {
+  /* font-family: var(--instrument); */
+}
+
+.d-heroContent img {
+  width: auto;
+  height: 30px;
+}
+
+
+#review-upgrades-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#d-reviews {
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  /* padding: .5rem; */
+}
+
+#d-reviews h3 {
+  font-family: var(--instrument);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .5rem 0;
+  display: block;
+}
+
+#d-reviews ol {
+  list-style-type: disc;
+  padding: 0 1rem;
+}
+
+#d-reviews ol li {
+  color: var(--black);
+  padding: .5rem 0;
+  font-size: .8rem;
+}
+
+/* Upgrades */
+#d-upgrades {
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
+  /* padding: .5rem; */
+}
+
+#d-upgrades h3 {
+  font-family: var(--instrument);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: .5rem 0;
+  display: block;
+}
+
+#d-upgrades .d-upgradesContentWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-evenly;
+}
+
+#d-upgrades .d-upgradesContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  width: 45%;
+  border: 1px solid var(--black);
+}
+
+#d-upgrades .d-upgradesContentImage {
+  display: flex;
+  justify-content: center;
+  background-color: var(--blue);
+  padding: .5rem 0;
+  width: 100%;
+  border: 1px solid var(--black);
+}
+
+#d-upgrades .d-upgradesContentImage img {
+  width: 50px;
+  height: 50px;
+}
+
+#d-upgrades .d-upgradesContent a {
+  font-family: var(--instrument);
+  font-weight: 400;
+  font-size: .8rem;
+  padding: .5rem 0;
+  display: block;
+}
+
+/* Footer */
+footer {
+  font-family: var(--instrument);
+  font-weight: 400;
+  font-size: .75rem;
+  padding: 1rem 0;
+  bottom: 0;
+}
