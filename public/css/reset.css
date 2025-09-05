@@ -10,10 +10,10 @@
     margin: 0;
 }
 
-/* 3. Enable keyword animations */
+/* 3. Animation preferences */
 @media (prefers-reduced-motion: no-preference) {
     html {
-        interpolate-size: allow-keywords;
+        scroll-behavior: smooth;
     }
 }
 
