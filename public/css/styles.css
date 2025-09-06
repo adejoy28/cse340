@@ -44,7 +44,7 @@ h6 {
   flex-direction: column;
   background: var(--white);
   padding: 0 .5rem;
-  
+
 }
 
 #top-header {
@@ -61,6 +61,7 @@ h6 {
   text-align: center;
   padding: .5rem 0;
   display: block;
+  text-decoration: none;
 }
 
 .siteName:hover,
@@ -70,6 +71,7 @@ h6 {
 
 .siteName a {
   color: var(--darkGrey);
+  text-decoration: none;
 }
 
 #tools {
@@ -246,7 +248,7 @@ nav ul li {
   background-color: var(--blue);
   padding: .5rem 0;
   width: 100%;
-  border: 1px solid var(--black);
+  /* border: 1px solid var(--black); */
 }
 
 #d-upgrades .d-upgradesContentImage img {
