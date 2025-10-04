@@ -5,6 +5,8 @@
 /* ***********************
  * Require Statements
  *************************/
+const session = require('express-session');
+const pool = require('./database');
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
@@ -16,6 +18,29 @@ const util = require("./utilities")
 const errorRoutes = require('./routes/error');
 const errorHandler = require('./middleware/errorMiddleware');
 
+
+
+
+/* *************************
+ * Middleware
+ * ************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+
+app.use(require('connect-flash')())
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine and Template
@@ -55,7 +80,7 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await util.getNav();
   console.error(`Error at: "${req.originalUrl}": ${err.message}`);
-  
+
   // Handle 404 errors with the custom error page
   if (err.status == 404) {
     return res.status(404).render("errors/error", {
@@ -65,7 +90,7 @@ app.use(async (err, req, res, next) => {
       nav
     });
   }
-  
+
   // For all other errors (500, etc.), use the error middleware
   errorHandler(err, req, res, next);
 });
