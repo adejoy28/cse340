@@ -103,22 +103,64 @@ nav {
   margin: 0 auto;
   width: 100%;
   padding: .5rem;
+  display: flex;
+  flex-direction: column;
   background-color: var(--darkGrey);
 }
 
+nav #hamburger {
+  display: block;
+  cursor: pointer;
+  color: var(--white);
+  font-size: 1.5rem;
+  background-color: transparent;
+  outline: none;
+  width: 50px;
+  align-self: flex-end;
+  /* float: right; */
+  border: none;
+}
+
 nav ul {
+  display: none;
+}
+
+nav ul.show {
   list-style-type: none;
   margin: 0;
   overflow: hidden;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 0;
-  justify-content: space-around;
 }
 
 nav ul li {
-  color: var(--white)
+  display: block;
+  width: 100%;
+  padding: 5px 0;
+  text-align: center;
 }
 
+nav ul li a {
+  color: var(--white);
+  text-decoration: none;
+  padding: 3px 5px;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+nav li:hover a:hover,
+nav a:active {
+  background-color: var(--white);
+  color: var(--darkGrey)
+    /* border-bottom: 1px solid var(--white); */
+}
+
+main {
+  padding: 1rem 0;
+}
 
 /******* Index page ***************/
 /* Hero */
@@ -271,4 +313,74 @@ footer {
   font-size: .75rem;
   padding: 1rem 0;
   bottom: 0;
+}
+
+
+/* Grid */
+.container {
+  margin: 0;
+  padding: 0;
+}
+
+#inv-display {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  list-style: none;
+  padding: 0;
+  gap: 1rem;
+}
+
+#inv-display li {
+  border: 1px solid var(--blue);
+  border-radius: 1rem;
+  max-width: clamp(200px, 100%, 300px);
+  align-content: space-between;
+  overflow: hidden;
+  /* padding-left: -2rem; */
+}
+
+#inv-display li>a {
+  height: 160px;
+  display: block;
+  overflow: hidden;
+}
+
+#inv-display .namePrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: .5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  height: 60px;
+  font-family: var(--instrument);
+}
+
+.namePrice h2 {
+  font-size: 1rem;
+  /* scrollbar-darkshadow-color: #000; */
+  padding: 0 0 0 .5rem;
+  align-items: center;
+  margin: auto 0;
+}
+
+.namePrice h2 a {
+  color: var(--black);
+  text-decoration: none;
+  text-align: left;
+}
+
+.namePrice hr {
+  width: 100%;
+  margin: 1rem auto;
+}
+
+/* Details Page */
+main .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
 }

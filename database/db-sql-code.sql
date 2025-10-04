@@ -254,5 +254,5 @@ WHERE inv_make LIKE 'GM';
 	-- to the middle of the file path in the inv_image 
 	-- and inv_thumbnail columns using a single query
 UPDATE inventory
-SET inv_image = REPLACE(inv_image, '/images', '/images/vehicles'),
+SET inv_image = REPLACE(inv_image, '/images', 'zz/images/vehicles'),
 	inv_thumbnail = REPLACE(inv_image, '/images', '/images/vehicles');

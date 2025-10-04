@@ -43,4 +43,54 @@
         padding: 0;
         margin: 0;
     }
+
+
+
+
+}
+
+@media screen and (min-width: 520px) {
+
+    /* Navigation */
+    nav ul {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style-type: none;
+        padding: 0;
+    }
+
+    nav #hamburger {
+        display: none;
+    }
+
+    /* Details Page */
+    main .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1rem 0;
+        grid-template-areas: "image title"
+            "image desc"
+            "image price"
+            "image miles"
+            "image color"
+            "image type";
+    }
+
+    main .grid .image {
+        grid-area: image;
+    }
+
+    main .grid .title {
+        grid-area: title;
+    }
+
+    main .grid .desc {
+        grid-area: desc;
+    }
+
+    main .grid .price {
+        grid-area: price;
+    }
 }
