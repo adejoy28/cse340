@@ -1,0 +1,114 @@
+@media (min-width: 768px) {
+    body {
+        padding: 1rem 0;
+    }
+
+    #wrapper {
+        padding: 0 1rem;
+        max-width: 1000px;
+        margin: 0 auto;
+        border-radius: 1rem;
+        border: 5px solid var(--blue);
+    }
+
+    #top-header {
+        padding: 1rem;
+    }
+
+    #tools {
+        padding: 1rem 0;
+    }
+
+    .siteName {
+        font-size: 2rem;
+    }
+
+    /* #review-upgrades-wrapper */
+    #review-upgrades-wrapper {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 2rem;
+        justify-content: space-evenly;
+    }
+
+    #d-reviews {
+        flex: 1;
+    }
+
+    #d-upgrades {
+        flex: 1;
+    }
+
+    #d-upgrades .d-upgradesContentWrapper {
+        padding: 0;
+        margin: 0;
+    }
+
+
+    /* Login */
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+    }
+
+}
+
+@media screen and (min-width: 520px) {
+
+    /* Navigation */
+    nav ul {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style-type: none;
+        padding: 0;
+    }
+
+    nav #hamburger {
+        display: none;
+    }
+
+    /* Details Page */
+    main .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1rem 0;
+        grid-template-areas: "image title"
+            "image desc"
+            "image price"
+            "image miles"
+            "image color"
+            "image type";
+    }
+
+    main .grid .image {
+        grid-area: image;
+    }
+
+    main .grid .title {
+        grid-area: title;
+    }
+
+    main .grid .desc {
+        grid-area: desc;
+    }
+
+    main .grid .price {
+        grid-area: price;
+    }
+}
