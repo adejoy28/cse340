@@ -10,6 +10,34 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const expressLayouts = require("express-ejs-layouts")
+const util = require("./utilities")
+const inventoryRoute = require("./routes/inventoryRoute")
+const accountRoute = require("./routes/accountRoute")
+const errorRoutes = require("./routes/error")
+const baseController = require("./controllers/baseController")
+const session = require("express-session")
+const pool = require("./database/")
+
+/* *************************
+ * Middleware
+ * ************************/
+app.use(session({
+  store: new(require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+
+app.use(require('connect-flash')())
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
 
 /* ***********************
  * View Engine and Templates
@@ -22,9 +50,18 @@ app.set("layout", "./layouts/layout");
  * Routes
  *************************/
 app.use(static)
-app.get("/", (req, res) => {
-    res.render("index", {title: "Home"})
-})
+
+// Index Route
+app.get("/", util.handleErrors( baseController.buildHome));
+
+// Inventory Routes
+app.use("/inv", util.handleErrors(inventoryRoute))
+
+// Account Routes
+app.use("/account", util.handleErrors(accountRoute))
+
+// Error routes
+app.use("/error", errorRoutes);
 
 /* ***********************
  * Local Server Information

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+
+<body>
+    <!-- Display Title -->
+    <h1><%= title %></h1>
+
+    <!-- Flash Message -->
+    <% if (message) { %>
+    <p class="flash-message"><%= message %></p>
+    <% } %>
+
+    <!-- Registration Form -->
+    <form action="/account/register" method="post">
+        <label for="account_firstname">First Name:</label>
+        <input type="text" id="account_firstname" name="account_firstname" value="" required>
+
+        <label for="account_lastname">Last Name:</label>
+        <input type="text" id="account_lastname" name="account_lastname" value="" required>
+
+        <label for="account_email">Email Address:</label>
+        <input type="email" id="account_email" name="account_email" value="" required>
+
+        <label for="account_password">Password:</label>
+        <input type="password" id="account_password" name="account_password" required>
+
+        <button type="submit">Register</button>
+    </form>
+</body>
+
+</html>
