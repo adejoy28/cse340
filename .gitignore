@@ -20,3 +20,4 @@ node_modules
 # ignore lock yaml file
 pnpm-lock.yaml
 ejs-tags.png
+assignment to submit/*
