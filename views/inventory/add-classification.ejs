@@ -1,0 +1,33 @@
+<!-- Display Title -->
+<h1><%= title %></h1>
+
+<!-- Flash Messages -->
+<% if (messages && messages.notice) { %>
+<div class="notice">
+    <%= messages.notice %>
+</div>
+<% } %>
+
+<!-- Validation Errors -->
+<% if (errors) { %>
+<ul class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <%  }) %>
+</ul>
+<% } %>
+
+<!-- Add Classification Form -->
+<form action="/inv/add-classification" method="post" id="classification-form">
+    <label for="classification_name">Classification Name:</label>
+    <small class="form-help">Name must be ALPHABETICAL CHARACTERS only</small>
+    <input type="text" id="classification_name" name="classification_name" required
+        value="<%= locals.classification_name ?? '' %>" pattern="[A-Za-z]+"
+        title="Classification name must contain only letters (no spaces or special characters)">
+
+    <button type="submit">Add Classification</button>
+</form>
+
+<div class="back-link">
+    <p><a href="/inv/">← Back to Management</a></p>
+</div>

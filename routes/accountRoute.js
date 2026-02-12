@@ -7,6 +7,14 @@ const regValidate = require('../utilities/account-validation')
 // Router to build inventory by classification view
 router.get("/login", utilities.handleErrors(accountsController.buildLogin));
 
+// Process the login attempt temporarily
+router.post(
+    "/login", 
+    regValidate.loginRules(),
+    regValidate.checkLoginData,
+    utilities.handleErrors(accountsController.loginAccount)
+)
+
 // Route to deliver Registration View
 router.get("/register", utilities.handleErrors(accountsController.buildRegister))
 

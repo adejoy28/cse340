@@ -1,0 +1,14 @@
+<!-- Display Title -->
+<h1><%= title %></h1>
+
+<!-- Flash Messages -->
+<% if (messages.notice) { %>
+<div class="notice">
+    <%= messages.notice %>
+</div>
+<% } %>
+
+<ul>
+    <li><a href="/inv/add-classification" class="management-btn btn-primary">Add New Classification</a></li>
+    <li><a href="/inv/add-inventory" class="management-btn btn-secondary">Add New Vehicle</a></li>
+</ul>

@@ -59,6 +59,25 @@ util.buildClassificationGrid = async function (data) {
     return grid;
 }
 
+util.buildClassificationList = async function (classification_id = null) {
+    let data = await invModel.getClassifications()
+    let classificationList =
+        '<select name="classification_id" id="classificationList" required>'
+    classificationList += "<option value=''>Choose a Classification</option>"
+    data.rows.forEach((row) => {
+        classificationList += '<option value="' + row.classification_id + '"'
+        if (
+            classification_id != null &&
+            row.classification_id == classification_id
+        ) {
+            classificationList += " selected "
+        }
+        classificationList += ">" + row.classification_name + "</option>"
+    })
+    classificationList += "</select>"
+    return classificationList
+}
+
 util.buildDetailPage = async function (data) {
     try {
 
@@ -91,7 +110,7 @@ util.buildDetailPage = async function (data) {
 }
 
 util.buildLogin = async function (req, res) {
-    const nav = await utilities.getNav();
+    const nav = await util.getNav();
     res.render("login", { title: "Login", nav });
 }   
 
