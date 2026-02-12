@@ -458,3 +458,40 @@ button {
   margin-bottom: 15px;
   text-align: center;
 }
+
+
+input:required:invalid,
+input:focus:invalid {
+  background-image: url(/images/invalid.png);
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+input:required:valid {
+  background-image: url(/images/valid.png);
+  background-position: right top;
+  background-repeat: no-repeat;
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.password-container input {
+  flex: 1;
+  padding: 10px;
+  padding-right: 20px;
+  margin-bottom: 15px;
+  margin-left: 0;
+}
+
+.password-container i {
+  /* position: absolute; */
+  /* right: 35px; */
+  cursor: pointer;
+  color: #666;
+  z-index: 10;
+}
