@@ -1,0 +1,49 @@
+<!-- Display Title -->
+<h1><%= title %></h1>
+
+<!-- Validation Errors -->
+<% if (errors) { %>
+<ul class="notice">
+    <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+    <%  }) %>
+</ul>
+<% } %>
+
+
+<!-- Delete Inventory Form -->
+<form action="/inv/delete" method="post" id="deleteForm">
+
+    <label for="inv_make">Make:</label>
+    <!-- Make: -->
+    <input type="text" id="inv_make" name="inv_make" required value="<%= locals.inventory_make ?? '' %>"
+        placeholder="Min of 3 characters" minlength="3" readonly>
+
+    <!-- Model: -->
+
+    <label for="inv_model">Model:</label>
+    <input type="text" id="inv_model" name="inv_model" required value="<%= locals.inventory_model ?? '' %>"
+        placeholder="   Min of 3 characters" minlength="3" readonly>
+
+    <label for="inv_price">Price:</label>
+    <input type="number" id="inv_price" name="inv_price" required min="0" step="1.00"
+        value="<%= locals.inventory_price ?? '' %>" placeholder="decimal or integer" readonly>
+
+    <label for="inv_year">Year:</label>
+    <input type="text" id="inv_year" name="inv_year" required min="1900" max="<%= new Date().getFullYear() + 1 %>"
+        value="<%= locals.inventory_year ?? '' %>" pattern="\d{4}" placeholder="4-digit year" readonly>
+
+
+    <p>Confirm Deletion - The delete is permanent.</p>
+
+    <button type="submit">Delete Vehicle</button>
+
+    <input type="hidden" name="inv_id" <% if(locals.inventory_id) { %> value="<%= locals.inventory_id %>" <% } %>>
+</form>
+
+<div class="back-link">
+    <p><a href="/inv/">← Back to Management</a></p>
+</div>
+
+
+<script src="../../public/js/script.js"></script>

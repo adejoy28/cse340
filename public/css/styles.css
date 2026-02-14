@@ -404,7 +404,10 @@ main .grid {
   padding: .5rem;
   border-radius: .4rem;
 }
-
+.notice li {
+  color: var(--red);
+  font-size: small;
+}
 
 /* Login */
 form {

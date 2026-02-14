@@ -4,15 +4,20 @@ const accountsController = require("../controllers/accountsController");
 const utilities = require("../utilities");
 const regValidate = require('../utilities/account-validation')
 
+
+router.get("/", 
+    utilities.checkLogin,
+    utilities.handleErrors(accountsController.buildManagement));
+
 // Router to build inventory by classification view
 router.get("/login", utilities.handleErrors(accountsController.buildLogin));
 
-// Process the login attempt temporarily
+// Process the login 
 router.post(
-    "/login", 
+    "/login",
     regValidate.loginRules(),
     regValidate.checkLoginData,
-    utilities.handleErrors(accountsController.loginAccount)
+    utilities.handleErrors(accountsController.accountLogin)
 )
 
 // Route to deliver Registration View

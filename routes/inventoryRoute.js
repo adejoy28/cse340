@@ -28,4 +28,23 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildDetail));
 
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+// Edit inventory routes
+router.get("/edit/:inventoryId", utilities.handleErrors(invController.buildEditInventory));
+
+router.post("/update/",
+    invValidate.inventoryRules(),
+    invValidate.checkInventoryData,
+    utilities.handleErrors(invController.updateInventory)
+);
+
+router.get("/delete/:inventoryId", utilities.handleErrors(invController.buildDeleteInventory));
+router.post("/delete/", 
+    invValidate.deleteInventoryRules(), 
+    invValidate.checkDeleteInventoryData,
+    utilities.handleErrors(invController.deleteInventory));
+
+
+
 module.exports = router;

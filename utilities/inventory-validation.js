@@ -209,4 +209,97 @@ invValidate.checkInventoryData = async (req, res, next) => {
     }
     next()
 }
+
+/* *******************************
+ * Check inventory data and return errors or continue
+ * ***************************** */
+invValidate.checkUpdateInventoryData = async (req, res, next) => {
+    const {
+        classification_id,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        inv_id
+    } = req.body
+
+    let errors = []
+    errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        let nav = await util.getNav()
+        const classificationList = await util.buildClassificationList(classification_id)
+
+        res.render("inventory/edit-inventory", {
+            errors,
+            title: "Edit Vehicle",
+            nav,
+            classificationList,
+            classification_id,
+            inv_make,
+            inv_model,
+            inv_year,
+            inv_description,
+            inv_image,
+            inv_thumbnail,
+            inv_price,
+            inv_miles,
+            inv_color,
+            inv_id,
+            messages: null
+        })
+        return
+    }
+    next()
+}
+
+/* *******************************
+ * Check delete inventory data and return errors or continue
+ * ***************************** */
+invValidate.checkDeleteInventoryData = async (req, res, next) => {
+    const {
+        inv_id
+    } = req.body
+
+    let errors = []
+    errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+        let nav = await util.getNav()
+
+        res.render("inventory/delete-inventory", {
+            errors,
+            title: "Delete Vehicle",
+            nav,
+            inv_id,
+            messages: null
+        })
+        return
+    }
+    next()
+}
+
+/*  **********************************
+ *  Inventory Data Validation Rules
+ * ********************************* */
+invValidate.deleteInventoryRules = () => {
+    return [
+        // Classification validation
+        body("inv_id")
+        .trim()
+        .notEmpty()
+        .withMessage("Please select a vehicle.")
+        .bail()
+        .isInt({
+            min: 1
+        })
+        .withMessage("Invalid vehicle selected."),
+    ]
+}
+
 module.exports = invValidate
