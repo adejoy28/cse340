@@ -1,4 +1,5 @@
 const invModel = require("../models/inventory-model");
+const accModel = require("../models/account-model");
 const util = {};
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
@@ -122,21 +123,72 @@ util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)
 /* ****************************************
  * Middleware to check token validity
  **************************************** */
+// util.checkJWTToken = (req, res, next) => {
+//     if (req.cookies.jwt) {
+//         jwt.verify(
+//             req.cookies.jwt,
+//             process.env.ACCESS_TOKEN_SECRET,
+//             function (err, accountData) {
+//                 if (err) {
+//                     req.flash("Please log in")
+//                     res.clearCookie("jwt")
+//                     return res.redirect("/account/login")
+//                 }
+//                 res.locals.accountData = accountData
+//                 res.locals.loggedin = 1
+//                 next()
+//             })
+//     } else {
+//         next()
+//     }
+// }
+
 util.checkJWTToken = (req, res, next) => {
     if (req.cookies.jwt) {
         jwt.verify(
             req.cookies.jwt,
             process.env.ACCESS_TOKEN_SECRET,
-            function (err, accountData) {
+            async function (err, accountData) {
                 if (err) {
-                    req.flash("Please log in")
+                    req.flash("notice", "Please log in")
                     res.clearCookie("jwt")
                     return res.redirect("/account/login")
                 }
+
+                // 1. Fetch current data to ensure user still exists in DB
+                const currentAccountData = await accModel.getAccountById(accountData.account_id)
+
+                if (!currentAccountData) {
+                    // Case: Token is valid, but user was deleted from DB
+                    res.clearCookie("jwt")
+                    return res.redirect("/account/login")
+                }
+
+                // 2. Check if sensitive info has changed (Sync Check)
+                const needsUpdate =
+                    currentAccountData.account_firstname !== accountData.account_firstname ||
+                    currentAccountData.account_lastname !== accountData.account_lastname ||
+                    currentAccountData.account_email !== accountData.account_email;
+
+                if (needsUpdate) {
+                    // 3. Update token with fresh data (excluding password)
+                    delete currentAccountData.account_password
+                    const accessToken = jwt.sign(currentAccountData, process.env.ACCESS_TOKEN_SECRET, {
+                        expiresIn: 3600 * 1000
+                    })
+                    res.cookie("jwt", accessToken, {
+                        httpOnly: true,
+                        maxAge: 3600 * 1000
+                    })
+                    // Update the local variable for the current request
+                    accountData = currentAccountData
+                }
+
                 res.locals.accountData = accountData
                 res.locals.loggedin = 1
                 next()
-            })
+            }
+        )
     } else {
         next()
     }
@@ -146,11 +198,32 @@ util.checkJWTToken = (req, res, next) => {
  *  Check Login
  * ************************************ */
 util.checkLogin = (req, res, next) => {
+    console.log("checking login")
     if (res.locals.loggedin) {
         next()
     } else {
         req.flash("notice", "Please log in.")
         return res.redirect("/account/login")
+    }
+}
+
+/* ****************************************
+ *  Check Account Type
+ * ************************************ */
+util.checkAccountType = (req, res, next) => {
+    if (res.locals.loggedin && res.locals.accountData) {
+        const accountType = res.locals.accountData.account_type;
+        if (accountType === "Employee" || accountType === "Admin") {
+            next();
+        } else {
+            req.flash("notice", "Access denied. Employee or Admin account required.");
+            return res.redirect("/account/login");
+            // return res.redirect(req.get('Referer') || '/');
+        }
+    } else {
+        req.flash("notice", "Please log in with an Employee or Admin account.");
+        return res.redirect("/account/login");
+        // return res.redirect(req.get('Referer') || '/');
     }
 }
 module.exports = util;

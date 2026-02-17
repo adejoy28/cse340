@@ -1,49 +1,66 @@
 // Needed Resources
 const router = require("express").Router();
 const invController = require("../controllers/inventoryController");
-const utilities = require("../utilities");
+const util = require("../utilities");
 const invValidate = require("../utilities/inventory-validation");
 
 // Router to build inventory by classification view
 
-router.get("/", utilities.handleErrors(invController.buildManagement));
+router.get("/", 
+    util.checkLogin,
+    util.checkAccountType,
+    util.handleErrors(invController.buildManagement));
 
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
+router.get("/add-classification", 
+    util.checkLogin,
+    util.checkAccountType,
+    util.handleErrors(invController.buildAddClassification));
 
-router.post("/add-classification", 
+router.post("/add-classification",
+    util.checkLogin,
+    util.checkAccountType,
     invValidate.classificationRules(),
     invValidate.checkClassificationData,
-    utilities.handleErrors(invController.addClassification));
+    util.handleErrors(invController.addClassification));
 
 // Add Inventory routes
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory));
+router.get("/add-inventory", 
+    util.checkLogin,
+    util.checkAccountType,
+    util.handleErrors(invController.buildAddInventory));
 
 router.post("/add-inventory",
+    util.checkLogin,
+    util.checkAccountType,
     invValidate.inventoryRules(),
     invValidate.checkInventoryData,
-    utilities.handleErrors(invController.addInventory)
+    util.handleErrors(invController.addInventory)
 );
 
-router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
+router.get("/type/:classificationId", util.handleErrors(invController.buildByClassificationId));
 
-router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildDetail));
+router.get("/detail/:inventoryId", util.handleErrors(invController.buildDetail));
 
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory/:classification_id", util.handleErrors(invController.getInventoryJSON))
 
 // Edit inventory routes
-router.get("/edit/:inventoryId", utilities.handleErrors(invController.buildEditInventory));
+router.get("/edit/:inventoryId", util.handleErrors(invController.buildEditInventory));
 
 router.post("/update/",
+    util.checkLogin,
+    util.checkAccountType,
     invValidate.inventoryRules(),
     invValidate.checkInventoryData,
-    utilities.handleErrors(invController.updateInventory)
+    util.handleErrors(invController.updateInventory)
 );
 
-router.get("/delete/:inventoryId", utilities.handleErrors(invController.buildDeleteInventory));
-router.post("/delete/", 
+router.get("/delete/:inventoryId", util.handleErrors(invController.buildDeleteInventory));
+router.post("/delete/",
+    util.checkLogin,
+    util.checkAccountType,
     invValidate.deleteInventoryRules(), 
     invValidate.checkDeleteInventoryData,
-    utilities.handleErrors(invController.deleteInventory));
+    util.handleErrors(invController.deleteInventory));
 
 
 

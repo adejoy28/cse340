@@ -140,4 +140,112 @@ validate.checkLoginData = async (req, res, next) => {
     }
     next()
 }
+
+validate.updateRules = () => {
+    console.log("checking the updateRules")
+    return [
+    body("account_firstname")
+        .trim()
+        .escape()
+        .isLength({
+            min: 1
+        })
+        .withMessage("Please provide a first name."),
+
+        body("account_lastname")
+        .trim()
+        .escape()
+        .isLength({
+            min: 1
+        })
+        .withMessage("Please provide a last name."),
+
+        body("account_email")
+        .trim()
+        .escape()
+        .isEmail()
+        .normalizeEmail()
+        .withMessage("Please provide a valid email.")
+        .custom(async (account_email, {
+            req
+        }) => {
+            const account_id = req.body.account_id
+            const emailExists = await accountModel.checkExistingEmail(account_email)
+            if (emailExists) {
+                const currentAccount = await accountModel.getAccountById(account_id)
+                if (currentAccount.account_email !== account_email) {
+                    throw new Error("Email exists. Please use a different email")
+                }
+            }
+        })
+    ]
+}
+
+validate.checkUpdateData = async (req, res, next) => {
+    console.log("checking the checkUpdateData")
+    const {
+        account_firstname,
+        account_lastname,
+        account_email
+    } = req.body
+    let errors = []
+
+    errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        res.render("account/update-account", {
+            title: "Update Account Information",
+            nav,
+            errors,
+            accountData: {
+                account_id: req.body.account_id,
+                account_firstname,
+                account_lastname,
+                account_email
+            }
+        })
+        return
+    }
+    next()
+}
+validate.passwordRules = () => {
+    return [
+        body("new_password")
+        .trim()
+        .isStrongPassword({
+            minLength: 12,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1,
+        })
+        .withMessage("Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character."),
+        body("confirm_password")
+        .trim()
+        .custom((value, {
+            req
+        }) => {
+            if (value !== req.body.new_password) {
+                throw new Error('Password confirmation does not match');
+            }
+            return true;
+        })
+        .withMessage("Passwords do not match."),
+    ]
+}
+validate.checkPasswordData = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const accountData = await accountModel.getAccountById(req.body.account_id)
+        res.render("account/update-account", {
+            title: "Update Account Information",
+            nav,
+            errors,
+            accountData
+        })
+        return
+    }
+    next()
+}
 module.exports = validate;

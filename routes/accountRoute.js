@@ -1,34 +1,55 @@
 // Needed Resources
 const router = require("express").Router();
 const accountsController = require("../controllers/accountsController");
-const utilities = require("../utilities");
+const util = require("../utilities");
 const regValidate = require('../utilities/account-validation')
 
 
 router.get("/", 
-    utilities.checkLogin,
-    utilities.handleErrors(accountsController.buildManagement));
+    util.checkLogin,
+    util.handleErrors(accountsController.buildManagement));
 
 // Router to build inventory by classification view
-router.get("/login", utilities.handleErrors(accountsController.buildLogin));
+router.get("/login", util.handleErrors(accountsController.buildLogin));
 
 // Process the login 
 router.post(
     "/login",
     regValidate.loginRules(),
     regValidate.checkLoginData,
-    utilities.handleErrors(accountsController.accountLogin)
+    util.handleErrors(accountsController.accountLogin)
 )
 
+// Route to handle logout
+router.get("/logout", util.handleErrors(accountsController.accountLogout))
+
 // Route to deliver Registration View
-router.get("/register", utilities.handleErrors(accountsController.buildRegister))
+router.get("/register", util.handleErrors(accountsController.buildRegister))
 
 //Route to deliver Register Account
 router.post('/register',
     regValidate.registrationRules(),
     regValidate.checkRegData,
-    utilities.handleErrors(accountsController.registerAccount)
+    util.handleErrors(accountsController.registerAccount)
 )
 
+// Route to deliver update account view
+router.get("/update/:id",
+    util.checkLogin,
+    util.handleErrors(accountsController.buildUpdateAccount));
+
+// Route to process update account
+router.post("/update/",
+    util.checkLogin,
+    regValidate.updateRules(),
+    regValidate.checkUpdateData,
+    util.handleErrors(accountsController.updateAccount)
+)
+
+router.post("/change-password/",
+    util.checkLogin,
+    regValidate.passwordRules(),
+    regValidate.checkPasswordData,
+    util.handleErrors(accountsController.changePassword));
 
 module.exports = router;

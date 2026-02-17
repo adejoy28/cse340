@@ -330,7 +330,7 @@ footer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: start;
   list-style: none;
   padding: 0;
   gap: 1rem;
@@ -392,19 +392,19 @@ main .grid {
 
 
 /* Messages */
-#messages {
+.notice {
   padding: .3rem 0;
   margin: 0;
 }
 
-#messages .notice {
+.notice .list {
   list-style: none;
   background-color: var(--red);
   color: var(--white);
   padding: .5rem;
   border-radius: .4rem;
 }
-.notice li {
+.notice .list li {
   color: var(--red);
   font-size: small;
 }

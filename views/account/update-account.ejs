@@ -1,0 +1,259 @@
+<!-- Display Title -->
+<h1><%= title %></h1>
+
+<!-- Flash Messages -->
+<% if (messages.notice) { %>
+<div class="notice">
+    <%= messages.notice %>
+</div>
+<% } %>
+
+<!-- Validation Errors -->
+<% if (errors) { %>
+<div class="notice">
+    <ul>
+        <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+        <% }) %>
+    </ul>
+</div>
+<% } %>
+
+<!-- Account Update Form -->
+<section class="account-form-section">
+    <h2>Update Account Information</h2>
+    <form action="/account/update/" method="post" class="account-form" id="accountUpdateForm">
+        <!-- Hidden account ID field -->
+        <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+
+        <!-- First Name Field -->
+        <label for="account_firstname">First Name *</label>
+        <input type="text" id="account_firstname" name="account_firstname"
+            value="<%= typeof account_firstname !== 'undefined' ? account_firstname : accountData.account_firstname %>"
+            required minlength="2" maxlength="50" pattern="[A-Za-z\s-]+"
+            title="First name can only contain letters, spaces, and hyphens">
+
+        <!-- Last Name Field -->
+        <label for="account_lastname">Last Name *</label>
+        <input type="text" id="account_lastname" name="account_lastname"
+            value="<%= typeof account_lastname !== 'undefined' ? account_lastname : accountData.account_lastname %>"
+            required minlength="2" maxlength="50" pattern="[A-Za-z\s-]+"
+            title="Last name can only contain letters, spaces, and hyphens">
+
+        <!-- Email Field -->
+        <label for="account_email">Email Address *</label>
+        <input type="email" id="account_email" name="account_email"
+            value="<%= typeof account_email !== 'undefined' ? account_email : accountData.account_email %>" required
+            maxlength="100" title="Please enter a valid email address">
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Update Account Information</button>
+    </form>
+</section>
+
+<!-- Change Password Form -->
+<section class="account-form-section">
+    <h2>Change Password</h2>
+    <div class="password-info">
+        <p><strong>Note:</strong> Entering a new password will replace your current password.</p>
+        <p>Your password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.</p>
+    </div>
+
+    <form action="/account/change-password/" method="post" class="account-form" id="passwordChangeForm">
+        <!-- Hidden account ID field -->
+        <input type="hidden" name="account_id" value="<%= accountData.account_id %>">
+
+        <!-- New Password Field -->
+        <label for="new_password">New Password *</label>
+        <input type="password" id="new_password" name="new_password" required minlength="12"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{12,}"
+            title="Password must be at least 12 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character">
+
+        <label for="confirm_password">Confirm New Password *</label>
+        <input type="password" id="confirm_password" name="confirm_password" required minlength="12"
+            title="Re-enter your new password to confirm">
+
+        <button type="submit" class="btn btn-secondary">Change Password</button>
+    </form>
+</section>
+<!-- <style>
+    .account-form-section {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .account-form-section h2 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        color: #333;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 0.5rem;
+    }
+
+    .account-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .account-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #555;
+    }
+
+    .account-form input[type="text"],
+    .account-form input[type="email"],
+    .account-form input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .account-form input:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .account-form input:invalid {
+        border-color: #dc3545;
+    }
+
+    .account-form input:valid {
+        border-color: #28a745;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+        transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .notice {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+    }
+
+    .notice ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+
+    .field-error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    /* Password form specific styles */
+    .password-info {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        border-radius: 4px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .password-info p {
+        margin: 0 0 1rem 0;
+        color: #1565c0;
+    }
+
+    .password-requirements h4 {
+        margin: 0 0 0.5rem 0;
+        color: #1565c0;
+        font-size: 0.9rem;
+    }
+
+    .password-requirements ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        color: #555;
+        font-size: 0.85rem;
+    }
+
+    .password-requirements li {
+        margin-bottom: 0.25rem;
+    }
+
+    .password-strength {
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .strength-weak {
+        color: #dc3545;
+    }
+
+    .strength-medium {
+        color: #ffc107;
+    }
+
+    .strength-strong {
+        color: #28a745;
+    }
+
+    /* Add spacing between forms */
+    .account-form-section+.account-form-section {
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+        .account-form-section {
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        .password-requirements {
+            font-size: 0.8rem;
+        }
+
+        .account-form-section+.account-form-section {
+            margin-top: 1rem;
+        }
+    }
+</style> -->
