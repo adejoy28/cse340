@@ -173,6 +173,60 @@ async function deleteInventory(inv_id) {
     }
 }
 
+/* ***************************
+ *  Search vehicles with filters
+ * ************************** */
+async function searchVehicles(filters = {}) {
+    try {
+        let sql = `SELECT * FROM public.inventory AS i
+                  JOIN public.classification AS c
+                  ON i.classification_id = c.classification_id WHERE 1=1`;
+        let params = [];
+        let paramIndex = 1;
+
+        // Price range filter
+        if (filters.minPrice) {
+            sql += ` AND i.inv_price >= $${paramIndex}`;
+            params.push(filters.minPrice);
+            paramIndex++;
+        }
+        if (filters.maxPrice) {
+            sql += ` AND i.inv_price <= $${paramIndex}`;
+            params.push(filters.maxPrice);
+            paramIndex++;
+        }
+
+        // Year filter
+        if (filters.year) {
+            sql += ` AND i.inv_year = $${paramIndex}`;
+            params.push(filters.year);
+            paramIndex++;
+        }
+
+        // Mileage filter
+        if (filters.maxMileage) {
+            sql += ` AND i.inv_miles <= $${paramIndex}`;
+            params.push(filters.maxMileage);
+            paramIndex++;
+        }
+
+        // Classification filter
+        if (filters.classification_id) {
+            sql += ` AND i.classification_id = $${paramIndex}`;
+            params.push(filters.classification_id);
+            paramIndex++;
+        }
+
+        sql += ` ORDER BY i.inv_price`;
+
+        const result = await pool.query(sql, params);
+        return result.rows;
+    } catch (error) {
+        console.error("Error searching vehicles:", error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     getClassifications,
@@ -182,5 +236,6 @@ module.exports = {
     checkExistingClassification,
     addInventory,
     updateInventory,
-    deleteInventory
+    deleteInventory,
+    searchVehicles
 };

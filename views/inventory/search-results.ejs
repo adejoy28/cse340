@@ -1,0 +1,94 @@
+<!-- Display Title -->
+<h1><%= title %></h1>
+
+<!-- Flash Messages -->
+<% if (messages.notice) { %>
+<div class="notice">
+    <%= messages.notice %>
+</div>
+<% } %>
+
+<!-- Search Filters Section -->
+<section class="search-filters">
+    <h2>Search Filters</h2>
+    <form action="/inv/search" method="post" class="search-form">
+
+        <!-- Price Range -->
+        <div class="filter-group">
+            <label for="minPrice">Minimum Price:</label>
+            <input type="number" id="minPrice" name="minPrice" value="<%= filters.minPrice || '' %>"
+                placeholder="No minimum" min="0" step="1000">
+
+            <label for="maxPrice">Maximum Price:</label>
+            <input type="number" id="maxPrice" name="maxPrice" value="<%= filters.maxPrice || '' %>"
+                placeholder="No maximum" min="0" step="1000">
+        </div>
+
+        <!-- Year Filter -->
+        <div class="filter-group">
+            <label for="year">Year:</label>
+            <select id="year" name="year">
+                <option value="">Any Year</option>
+                <% for(let year = 2024; year >= 2010; year--) { %>
+                <option value="<%= year %>" <%= filters.year == year ? 'selected' : '' %>>
+                    <%= year %>
+                </option>
+                <% } %>
+            </select>
+        </div>
+
+        <!-- Mileage Filter -->
+        <div class="filter-group">
+            <label for="maxMileage">Maximum Mileage:</label>
+            <input type="number" id="maxMileage" name="maxMileage" value="<%= filters.maxMileage || '' %>"
+                placeholder="No maximum" min="0" step="1000">
+        </div>
+
+        <!-- Classification Filter -->
+        <div class="filter-group">
+            <label for="classification_id">Vehicle Type:</label>
+            <select id="classification_id" name="classification_id">
+                <option value="">All Types</option>
+                <% classifications.forEach(classification => { %>
+                <option value="<%= classification.classification_id %>"
+                    <%= filters.classification_id == classification.classification_id ? 'selected' : '' %>>
+                    <%= classification.classification_name %>
+                </option>
+                <% }) %>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search Vehicles</button>
+        <a href="/" class="btn btn-secondary">Clear Filters</a>
+    </form>
+</section>
+
+<!-- Search Results Section -->
+<section class="search-results">
+    <h2>Search Results</h2>
+    <% if (vehicles && vehicles.length > 0) { %>
+    <p>Found <%= vehicles.length %> vehicles matching your criteria.</p>
+    <div class="vehicle-grid">
+        <% vehicles.forEach(vehicle => { %>
+        <div class="vehicle-item">
+            <a href="/inv/detail/<%= vehicle.inv_id %>"
+                title="View <%= vehicle.inv_make %> <%= vehicle.inv_model %> details">
+                <img src="<%= vehicle.inv_thumbnail %>"
+                    alt="Image of <%= vehicle.inv_make %> <%= vehicle.inv_model %> on CSE Motors" />
+            </a>
+            <div class="vehicle-info">
+                <h3><%= vehicle.inv_make %> <%= vehicle.inv_model %></h3>
+                <p class="price">$<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
+                <p class="year"><%= vehicle.inv_year %></p>
+                <p class="mileage"><%= new Intl.NumberFormat('en-US').format(vehicle.inv_miles) %> miles</p>
+                <p class="classification"><%= vehicle.classification_name %></p>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+    <div class="notice">
+        <p>No vehicles found matching your search criteria. Please try different filters.</p>
+    </div>
+    <% } %>
+</section>

@@ -360,4 +360,36 @@ invCont.deleteInventory = async (req, res) => {
     }
 }
 
+/* ****************************************
+ *  Process vehicle search
+ * *************************************** */
+invCont.buildSearchVehicles = async function (req, res) {
+    try {
+        const filters = {
+            minPrice: req.body.minPrice || null,
+            maxPrice: req.body.maxPrice || null,
+            year: req.body.year || null,
+            maxMileage: req.body.maxMileage || null,
+            classification_id: req.body.classification_id || null
+        };
+
+        let nav = await util.getNav();
+        const searchResults = await invModel.searchVehicles(filters);
+        const classifications = await invModel.getClassifications();
+
+        res.render("inventory/search-results", {
+            title: "Search Results",
+            nav,
+            classifications: classifications.rows,
+            vehicles: searchResults,
+            filters,
+            errors: null
+        });
+    } catch (error) {
+        console.error("Search error:", error);
+        req.flash("notice", "Search failed. Please try again.");
+        res.redirect("/inv/search");
+    }
+}
+
 module.exports = invCont;

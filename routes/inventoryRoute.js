@@ -6,12 +6,12 @@ const invValidate = require("../utilities/inventory-validation");
 
 // Router to build inventory by classification view
 
-router.get("/", 
+router.get("/",
     util.checkLogin,
     util.checkAccountType,
     util.handleErrors(invController.buildManagement));
 
-router.get("/add-classification", 
+router.get("/add-classification",
     util.checkLogin,
     util.checkAccountType,
     util.handleErrors(invController.buildAddClassification));
@@ -24,7 +24,7 @@ router.post("/add-classification",
     util.handleErrors(invController.addClassification));
 
 // Add Inventory routes
-router.get("/add-inventory", 
+router.get("/add-inventory",
     util.checkLogin,
     util.checkAccountType,
     util.handleErrors(invController.buildAddInventory));
@@ -58,10 +58,15 @@ router.get("/delete/:inventoryId", util.handleErrors(invController.buildDeleteIn
 router.post("/delete/",
     util.checkLogin,
     util.checkAccountType,
-    invValidate.deleteInventoryRules(), 
+    invValidate.deleteInventoryRules(),
     invValidate.checkDeleteInventoryData,
     util.handleErrors(invController.deleteInventory));
 
-
+// Search vehicles
+router.get("/search", util.handleErrors(invController.buildSearchVehicles));
+router.post("/search",
+    invValidate.searchRules(),
+    invValidate.checkSearchData,
+    util.handleErrors(invController.buildSearchVehicles));
 
 module.exports = router;

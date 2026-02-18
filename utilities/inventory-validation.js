@@ -302,4 +302,81 @@ invValidate.deleteInventoryRules = () => {
     ]
 }
 
+
+/*  **********************************
+ *  Search Data Validation Rules
+ * ********************************* */
+invValidate.searchRules = () => {
+    return [
+        // Optional price validation
+        body("minPrice")
+        .optional()
+        .isNumeric()
+        .withMessage("Minimum price must be a number")
+        .isFloat({
+            min: 0
+        })
+        .withMessage("Minimum price cannot be negative"),
+
+        body("maxPrice")
+        .optional()
+        .isNumeric()
+        .withMessage("Maximum price must be a number")
+        .isFloat({
+            min: 0
+        })
+        .withMessage("Maximum price cannot be negative"),
+
+        // Year validation
+        body("year")
+        .optional()
+        .isInt({
+            min: 1900,
+            max: 2025
+        })
+        .withMessage("Year must be between 1900 and 2025"),
+
+        // Mileage validation
+        body("maxMileage")
+        .optional()
+        .isNumeric()
+        .withMessage("Maximum mileage must be a number")
+        .isFloat({
+            min: 0
+        })
+        .withMessage("Maximum mileage cannot be negative"),
+
+        // Classification validation
+        body("classification_id")
+        .optional()
+        .isInt({
+            min: 1
+        })
+        .withMessage("Please select a valid vehicle type")
+    ]
+}
+
+/* ******************************
+ * Check search data
+ * ***************************** */
+invValidate.checkSearchData = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        let nav = await utilities.getNav()
+        const invModel = require("../models/inventory-model")
+        const classifications = await invModel.getClassifications()
+
+        res.render("inventory/search-results", {
+            title: "Vehicle Search",
+            nav,
+            classifications: classifications.rows,
+            vehicles: [],
+            filters: req.body,
+            errors: errors.array()
+        })
+        return
+    }
+    next()
+}
+
 module.exports = invValidate
